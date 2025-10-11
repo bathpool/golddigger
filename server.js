@@ -12,11 +12,32 @@ const server = http.createServer(async (req, res) => {
     if (req.url === "/price") {
         console.log("getprice request received")
         const price = getPrice()
-        console.log(price)
-        sendResponse(res, 200, 'text/plain', price)
+        sendResponse(res, 200, 'text/html', price)
 
-    } else {
+    }   else if(req.url === "/invest") {
+        console.log("invest received")
+        let body = ''
+        for await (const chunk of req) {
+            body += chunk
+        }
+        try {
+            console.log(typeof(body))
+            console.log(typeof(JSON.parse(body)))
+
+            let currentTxt = await fs.readFile('data.txt', "utf8")
+            currentTxt += `${body}\n`
+
+            fs.writeFile('data.txt', currentTxt)
+
+        } catch (err) {
+            throw new Error(`Invalid JSON format: ${err}`)
+        }
+        sendResponse(res, 200, "application/json", body)
+
+    }   else {
         
+        console.log(req.url)
+
         const filePath = path.join('public', req.url === '/' ? 'index.html' : req.url)
         const ext = path.extname(filePath)
         const contentType = getContentType(ext)
