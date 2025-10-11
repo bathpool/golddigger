@@ -1,11 +1,13 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import http from 'node:http'
+import { EventEmitter } from 'node:events'
 import { getContentType } from './getContentType.js'
 import { sendResponse } from './sendResponse.js'
 import { getPrice } from "./getPrice.js"
 
 const PORT = 8000
+const eventEmitter = new EventEmitter()
 
 const server = http.createServer(async (req, res) => {
 
@@ -20,19 +22,36 @@ const server = http.createServer(async (req, res) => {
         for await (const chunk of req) {
             body += chunk
         }
-        try {
-            console.log(typeof(body))
-            console.log(typeof(JSON.parse(body)))
 
+        eventEmitter.on("save", async (body) => {
             let currentTxt = await fs.readFile('data.txt', "utf8")
             currentTxt += `${body}\n`
+            await fs.writeFile('data.txt', currentTxt)
+        })
 
-            fs.writeFile('data.txt', currentTxt)
-
-        } catch (err) {
-            throw new Error(`Invalid JSON format: ${err}`)
-        }
+        eventEmitter.emit("save", body)
+     
         sendResponse(res, 200, "application/json", body)
+    }   else if(req.url === "/live"){
+        
+            res.statusCode = 200
+            res.setHeader('Content-Type', 'text/event-stream')
+            res.setHeader('Cache-Control', 'no-cache')
+            res.setHeader('Connection', 'keep-alive')
+            const interval = setInterval( () => {
+                    const price = getPrice()
+                    console.log(price)
+                    //data: ...\n\n: This is the specific format for Server-Sent Events.
+                    res.write(
+                        `data: ${price}\n\n`
+                    )
+                    console.log("hello")
+                }, 10000)
+
+            req.on('close', () => {
+                clearInterval(interval)
+                console.log('Client disconnected, interval cleared.')
+            })
 
     }   else {
         

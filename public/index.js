@@ -8,6 +8,16 @@ const confirmBtn = document.getElementById("confirm-btn")
 
 getCurrentPrice()
 
+//create EventSource obj
+const eventSource = new EventSource('live')
+
+//property as event handler to trigger for every event
+eventSource.onmessage = (event) => {
+     
+    priceSection.textContent = event.data
+}
+
+
 inputBtn.addEventListener("click", async (event) => {
     event.preventDefault()
 
