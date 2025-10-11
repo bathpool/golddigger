@@ -1,0 +1,13 @@
+{
+  "name": "golddigger",
+  "version": "1.0.0",
+  "description": "scrimba solo project",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "bathpool",
+  "license": "ISC"
+}
