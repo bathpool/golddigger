@@ -9,5 +9,8 @@
     "start": "node server.js"
   },
   "author": "bathpool",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }

@@ -5,8 +5,27 @@ import { EventEmitter } from 'node:events'
 import { getContentType } from './getContentType.js'
 import { sendResponse } from './sendResponse.js'
 import { getPrice } from "./getPrice.js"
+import express from 'express'
 
-const PORT = 8000
+const PORT = process.env.PORT || 8000
+
+const app = express()
+
+app.use('/price', priceRoutes)
+app.use('/invest', investRoutes)
+app.use('/live', liveRoutes)
+
+app.listen(PORT, console.log(`connected on port ${PORT}`))
+
+
+
+
+
+
+
+
+
+
 const eventEmitter = new EventEmitter()
 
 const server = http.createServer(async (req, res) => {
