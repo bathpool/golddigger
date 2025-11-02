@@ -3,4 +3,4 @@ import { checkPrice } from '../controllers/checkPrice.js'
 
 export const priceRoutes = express.Router()
 
-priceRoutes.get('/price', checkPrice)
+priceRoutes.get('/', checkPrice)

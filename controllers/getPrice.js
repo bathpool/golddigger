@@ -1,4 +1,4 @@
-import { getPrice } from '../getPrice.js'
+import { getPrice } from '../utils/getPrice.js'
 
 export function checkPrice(req, res) {
     console.log("getprice request received")
