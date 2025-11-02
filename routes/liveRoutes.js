@@ -3,4 +3,4 @@ import { liveData } from '../controllers/liveData.js'
 
 export const liveRoutes = express.Router()
 
-liveRoutes.post('/', liveData)
+liveRoutes.get('/', liveData)

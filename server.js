@@ -1,4 +1,7 @@
 import express from 'express'
+import { priceRoutes } from './routes/priceRoutes.js'  
+import { investRoutes } from './routes/investRoutes.js'
+import { liveRoutes } from './routes/liveRoutes.js'
 
 const PORT = process.env.PORT || 8000
 
